@@ -3,25 +3,71 @@ import { Transaction } from './../models/transaction';
 
 export class BlockChainService {
 
-    public createBlock(transaction: Transaction, blocks: Block[], minerAddress: string): Block {
+    public blocks: Block[];
+
+    constructor() {
+        this.blocks = [];
+    }
+
+    public createBlockFromTransaction(transaction: Transaction, minerAddress: string): Block {
 
         if (transaction === null) {
-            return new Block(blocks[blocks.length - 1].hash, null, new Date().getTime(), 0, minerAddress);
+            return new Block(this.blocks.length === 0 ? 1 : this.blocks[this.blocks.length - 1].index + 1, this.blocks.length === 0 ? this.getGenesisBlock().hash : this.blocks[this.blocks.length - 1].hash, null, new Date().getTime(), 0, minerAddress);
         }
 
-        const balance: number = this.computeBalance(transaction.fromAddress, blocks);
+        const balance: number = this.computeBalance(transaction.fromAddress);
 
         if (balance < transaction.amount) {
             return null;
         }
 
-        const block: Block = transaction.toBlock(blocks[blocks.length - 1].hash, minerAddress);
+        const block: Block = transaction.toBlock(this.blocks.length === 0 ? 1 : this.blocks[this.blocks.length - 1].index + 1, this.blocks.length === 0 ? this.getGenesisBlock().hash : this.blocks[this.blocks.length - 1].hash, minerAddress);
 
         return block;
     }
 
-    public canAddBlock(block: Block, blocks: Block[]): boolean {
-        if (!block.valid) {
+    public addBlock(bits: number, block: Block): void {
+        if (this.canAddBlock(bits, block)) {
+            this.blocks.push(block);
+        }
+    }
+
+    public replaceChain(bits: number, blocks: Block[]): void {
+        if (this.blocks.length > blocks.length) {
+            return;
+        }
+
+        if (!this.isChainValid(bits, blocks)) {
+            return;
+        }
+
+        this.blocks = blocks;
+    }
+
+    public getGenesisBlock(): Block {
+        const block = new Block(0, 'genesis-block', null, 1510379511, 25173, null);
+        block.mine(4);
+        return block;
+    }
+
+    public shouldRequestNewChain(bits: number, block: Block): boolean {
+        if (!block.valid(bits)) {
+            return false;
+        }
+
+        if (block.index !== (this.blocks.length === 0 ? 1 : this.blocks[this.blocks.length - 1].index + 1)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private canAddBlock(bits: number, block: Block): boolean {
+        if (!block.valid(bits)) {
+            return false;
+        }
+
+        if (block.index !== (this.blocks.length === 0 ? 1 : this.blocks[this.blocks.length - 1].index + 1)) {
             return false;
         }
 
@@ -29,7 +75,7 @@ export class BlockChainService {
             return true;
         }
 
-        const balance: number = this.computeBalance(block.transaction.fromAddress, blocks);
+        const balance: number = this.computeBalance(block.transaction.fromAddress);
 
         if (balance < block.transaction.amount) {
             return false;
@@ -38,10 +84,10 @@ export class BlockChainService {
         return true;
     }
 
-    public computeBalance(address: string, blocks: Block[]): number {
+    private computeBalance(address: string): number {
         let result = 0;
 
-        for (const block of blocks) {
+        for (const block of this.blocks) {
             if (block.transaction !== null && block.transaction.toAddress === address) {
                 result += block.transaction.amount;
             }
@@ -50,7 +96,7 @@ export class BlockChainService {
         return result;
     }
 
-    public isChainValid(bits: number, blocks: Block[]): boolean {
+    private isChainValid(bits: number, blocks: Block[]): boolean {
         // All blocks should be valid
         for (const block of blocks) {
             if (!block.valid(bits)) {
@@ -61,6 +107,7 @@ export class BlockChainService {
         // Chain should be valid
         // Previous hash needs to be equal to the previous block hash
         // Timestamp needs to be greater than the previous block timestamp
+        // Index needs to be 1 greater then the previous block index
         let previousBlock = this.getGenesisBlock();
 
         for (const block of blocks) {
@@ -73,15 +120,13 @@ export class BlockChainService {
                 return false;
             }
 
+            if (block.index !== previousBlock.index + 1) {
+                return false;
+            }
+
             previousBlock = block;
         }
 
         return true;
-    }
-
-    public getGenesisBlock(): Block {
-        const block = new Block("0", null, 1510379511, 25173, null);
-        block.computeHash(4);
-        return block;
     }
 }

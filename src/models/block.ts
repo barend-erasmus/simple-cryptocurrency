@@ -5,6 +5,7 @@ export class Block {
     public hash: string;
 
     constructor(
+        public index: number,
         public previousHash: string,
         public transaction: Transaction,
         public timestamp: number,
@@ -37,7 +38,7 @@ export class Block {
     }
 
     public computeHash(bits: number): void {
-        this.hash = this.hashAlgorithm(`${bits}:${this.previousHash}:${this.transaction === null? 'null' : this.transaction.signature}:${this.timestamp}:${this.minerAddress}:${this.nonce}`);
+        this.hash = this.hashAlgorithm(`${this.index}:${bits}:${this.previousHash}:${this.transaction === null? 'null' : this.transaction.signature}:${this.timestamp}:${this.minerAddress}:${this.nonce}`);
     }
 
     public mine(bits: number): void {

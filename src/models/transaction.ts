@@ -5,13 +5,12 @@ import { Block } from './block';
 
 export class Transaction {
 
-    public signature: string;
-
     constructor(
         public fromAddress: string,
         public toAddress: string,
         public amount: number,
         public timestamp: number,
+        public signature: string,
     ) {
     }
 
@@ -37,7 +36,7 @@ export class Transaction {
         return true;
     }
 
-    public toBlock(previousHash: string, minerAddress: string): Block {
-        return new Block(previousHash, this, new Date().getTime(), 0, minerAddress);
+    public toBlock(previousIndex: number, previousHash: string, minerAddress: string): Block {
+        return new Block(previousIndex + 1, previousHash, this, new Date().getTime(), 0, minerAddress);
     } 
 }

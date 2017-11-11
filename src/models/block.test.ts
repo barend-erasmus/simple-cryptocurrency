@@ -10,7 +10,8 @@ describe('Block', () => {
         it('should return true', () => {
 
             // Arrange
-            const block: Block = new Block("0", null, 1510379511, 25173, null);
+            const block: Block = new Block(0, "0", null, 1510379511, 0, null);
+            block.mine(4);
 
             // Act
             const result: boolean = block.valid(4);
@@ -27,6 +28,7 @@ describe('Block', () => {
                 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ3dteNqyjJLTHz7EXfofBsnvoe5xa60OIbcPRPeWPIMTaxAxW/LcGugQaQ6Clnf47Q+NGNcKHMdIQZcjZq1eOkCAwEAAQ==',
                 10,
                 1510379500,
+                null,
             );
 
             transaction.computeSignature(`MIIBOgIBAAJBAMJ4EO0RcH+clE2oCGCUcjUcTjBm2S67R8qQ4OBWTBrUCQ0dqvWy
@@ -37,7 +39,8 @@ describe('Block', () => {
             rGwmqJzpCqCHtQIgCunB+deXbRuDbRYvtx5+9guclZhSGnPzHtDy/kmF+4kCIDSR
             BBPDEbeORVOYCIipw7odIRc/b+6upZvHzEMb7suX`);
 
-            const block: Block = new Block("0", transaction, 1510379500 + 100, 8084, null);
+            const block: Block = new Block(0, "0", transaction, 1510379500 + 100, 0, null);
+            block.mine(4);
 
             // Act
             const result: boolean = block.valid(4);
@@ -54,6 +57,7 @@ describe('Block', () => {
                 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ3dteNqyjJLTHz7EXfofBsnvoe5xa60OIbcPRPeWPIMTaxAxW/LcGugQaQ6Clnf47Q+NGNcKHMdIQZcjZq1eOkCAwEAAQ==',
                 10,
                 1510379500,
+                null,
             );
 
             transaction.computeSignature(`MIIBOgIBAAJBAMJ4EO0RcH+clE2oCGCUcjUcTjBm2S67R8qQ4OBWTBrUCQ0dqvWy
@@ -66,7 +70,8 @@ describe('Block', () => {
 
             transaction.amount = 200;
 
-            const block: Block = new Block("0", transaction, 1510379500 + 100, 8084, null);
+            const block: Block = new Block(0, "0", transaction, 1510379500 + 100, 0, null);
+            block.mine(4);
 
             // Act
             const result: boolean = block.valid(4);
@@ -83,6 +88,7 @@ describe('Block', () => {
                 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ3dteNqyjJLTHz7EXfofBsnvoe5xa60OIbcPRPeWPIMTaxAxW/LcGugQaQ6Clnf47Q+NGNcKHMdIQZcjZq1eOkCAwEAAQ==',
                 10,
                 1510379500,
+                null,
             );
 
             transaction.computeSignature(`MIIBOgIBAAJBAMJ4EO0RcH+clE2oCGCUcjUcTjBm2S67R8qQ4OBWTBrUCQ0dqvWy
@@ -93,8 +99,9 @@ describe('Block', () => {
                                     rGwmqJzpCqCHtQIgCunB+deXbRuDbRYvtx5+9guclZhSGnPzHtDy/kmF+4kCIDSR
                                     BBPDEbeORVOYCIipw7odIRc/b+6upZvHzEMb7suX`);
 
-            const block: Block = new Block("0", transaction, 1510379500 - 100, 24732, null);
-            
+            const block: Block = new Block(0, "0", transaction, 1510379500 - 100, 0, null);
+            block.mine(4);
+
             // Act
             const result: boolean = block.valid(4);
 
@@ -105,7 +112,7 @@ describe('Block', () => {
         it('should return false given incorrect nonce', () => {
 
             // Arrange
-            const block: Block = new Block("0", null, 1510379511, 4444, null);
+            const block: Block = new Block(0, "0", null, 1510379511, 4444, null);
 
             // Act
             const result: boolean = block.valid(4);
