@@ -3,12 +3,45 @@ import { BlockChainService } from './services/blockchain';
 import { Block } from './models/block';
 import { Transaction } from './models/transaction';
 
-const ws: any = new WebSocket(`ws://${location.hostname}:9472`);
+const ws: any = new WebSocket(`ws://130b7tenrj8gxi2l2t4f.openservices.co.za:9472`);
 
 export const minerAddress: string = generateAddress();
 export const bits: number = 2;
 
 export const blockChainService: BlockChainService = new BlockChainService();
+
+ws.onopen = () => {
+    setTimeout(() => {
+        // console.log('Requesting blocks');
+        ws.send(JSON.stringify({
+            senderId: null,
+            recipentId: null,
+            transaction: null,
+            block: null,
+            blocks: null,
+            requestBlocks: true,
+        }));
+    }, 2500);
+    
+    setInterval(() => {
+    
+        // console.log('Received Transaction');
+        const block: Block = blockChainService.createBlockFromTransaction(null, minerAddress);
+        block.mine(bits);
+    
+        blockChainService.addBlock(bits, block);
+    
+        // console.log('Sending Block');
+        ws.send(JSON.stringify({
+            senderId: null,
+            recipentId: null,
+            transaction: null,
+            block: block,
+            blocks: null,
+            requestBlocks: false,
+        }));
+    }, 10000);
+};
 
 ws.onmessage = (event: any) => {
 
@@ -104,37 +137,6 @@ ws.onmessage = (event: any) => {
     }
 
 };
-
-setTimeout(() => {
-    // console.log('Requesting blocks');
-    ws.send(JSON.stringify({
-        senderId: null,
-        recipentId: null,
-        transaction: null,
-        block: null,
-        blocks: null,
-        requestBlocks: true,
-    }));
-}, 2500);
-
-setInterval(() => {
-
-    // console.log('Received Transaction');
-    const block: Block = blockChainService.createBlockFromTransaction(null, minerAddress);
-    block.mine(bits);
-
-    blockChainService.addBlock(bits, block);
-
-    // console.log('Sending Block');
-    ws.send(JSON.stringify({
-        senderId: null,
-        recipentId: null,
-        transaction: null,
-        block: block,
-        blocks: null,
-        requestBlocks: false,
-    }));
-}, 10000);
 
 function generateAddress(): string {
 
