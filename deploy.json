@@ -1,0 +1,40 @@
+{
+    "machine": {
+        "host": "$host",
+        "username": "$username",
+        "password": "$password"
+    },
+    "commands": [
+        "sudo apt-get update",
+        "curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -",
+        "sudo apt-get install -y nodejs",
+
+        "npm install pm2 -g",
+
+        "mkdir /logs",
+        "npm --prefix /opt/simple-cryptocurrency install",
+        "pm2 stop simple-cryptocurrency",
+        "pm2 start /opt/simple-cryptocurrency/src/app.js --name simple-cryptocurrency -- --prod --port 9020",
+        "sudo service nginx reload"
+    ],
+    "directories": [
+        {
+            "source": "$workspace/src",
+            "destination": "/opt/simple-cryptocurrency/src"
+        },
+        {
+            "source": "$workspace/coverage",
+            "destination": "/opt/simple-cryptocurrency/coverage"
+        }
+    ],
+    "files": [
+        {
+            "source": "$workspace/package.json",
+            "destination": "/opt/simple-cryptocurrency/package.json"
+        },
+        {
+            "source": "$workspace/nginx.conf",
+            "destination": "/etc/nginx/sites-enabled/simple-cryptocurrency"
+        }
+    ]
+}

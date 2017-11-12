@@ -41,7 +41,6 @@ describe('BlockChainService', () => {
                 new Block(2, '000014ec7be2b400e0a4a988b5857890', null, 1510421229749, 94913, ''),
             ]);
 
-
             // Assert
             expect(blockChainService.blocks.length).to.be.eq(3);
         });

@@ -133,4 +133,8 @@ export class BlockChainService {
 
         return true;
     }
+
+    private log(message: string): void {
+        console.log(message);
+    }
 }

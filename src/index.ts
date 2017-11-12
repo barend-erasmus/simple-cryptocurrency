@@ -3,7 +3,7 @@ import { BlockChainService } from './services/blockchain';
 import { Block } from './models/block';
 import { Transaction } from './models/transaction';
 
-const ws: any = new WebSocket('ws://localhost:9475');
+const ws: any = new WebSocket(`ws://${location.hostname}:9472`);
 
 export const minerAddress: string = generateAddress();
 export const bits: number = 2;
@@ -38,7 +38,7 @@ ws.onmessage = (event: any) => {
 
     if (json.blocks) {
         // console.log('Received Blocks');
-        blockChainService.replaceChain(4, json.blocks.map((x) => new Block(
+        blockChainService.replaceChain(bits, json.blocks.map((x) => new Block(
             x.index,
             x.previousHash,
             x.transaction ?
@@ -63,7 +63,7 @@ ws.onmessage = (event: any) => {
             json.block.minerAddress
         ));
 
-        if (blockChainService.shouldRequestNewChain(4, new Block(
+        if (blockChainService.shouldRequestNewChain(bits, new Block(
             json.block.index,
             json.block.previousHash,
             json.block.transaction ?

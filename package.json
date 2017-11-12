@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc & browserify ./src/index.js --s BlockChain -o ./src/public/js/bundle.js",
-    "start": "npm run build & tsc & node ./src/app.js",
+    "start": "tsc & browserify ./src/index.js --s BlockChain -o ./src/public/js/bundle.js & node ./src/app.js",
     "test": "tsc & mocha ./src/**/*.test.js",
-    "coverage": "tsc & istanbul cover node_modules/mocha/bin/_mocha --root ./src ./src/**/*.test.js"
+    "coverage": "tsc & istanbul cover node_modules/mocha/bin/_mocha --root ./src ./src/**/*.test.js",
+    "deploy": "tsc & browserify ./src/index.js --s BlockChain -o ./src/public/js/bundle.js & istanbul cover node_modules/mocha/bin/_mocha --root ./src ./src/**/*.test.js & ssh-deployer -f deploy.json --host simple-cryptocurrency.openservices.co.za --username username --password password --workspace ./"
   },
   "repository": {
     "type": "git",
