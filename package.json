@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc & browserify ./src/index.js --s BlockChain -o ./src/bundle.js",
-    "start": "tsc & node ./src/app.js",
+    "build": "tsc & browserify ./src/index.js --s BlockChain -o ./src/public/js/bundle.js",
+    "start": "npm run build & tsc & node ./src/app.js",
     "test": "tsc & mocha ./src/**/*.test.js",
     "coverage": "tsc & istanbul cover node_modules/mocha/bin/_mocha --root ./src ./src/**/*.test.js"
   },
@@ -21,9 +21,13 @@
   "homepage": "https://github.com/barend-erasmus/simple-cryptocurrency#readme",
   "dependencies": {
     "bcrypt": "^1.0.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
     "node-rsa": "^0.4.2",
     "uuid": "^3.1.0",
-    "ws": "^3.3.1"
+    "ws": "^3.3.1",
+    "yargs": "^10.0.3"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",

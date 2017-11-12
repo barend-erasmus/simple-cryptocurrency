@@ -1,12 +1,14 @@
+import * as NodeRSA from 'node-rsa';
 import { BlockChainService } from './services/blockchain';
 import { Block } from './models/block';
 import { Transaction } from './models/transaction';
 
 const ws: any = new WebSocket('ws://localhost:9475');
 
-const minerAddress: string = generateAddress();
+export const minerAddress: string = generateAddress();
+export const bits: number = 2;
 
-const blockChainService: BlockChainService = new BlockChainService();
+export const blockChainService: BlockChainService = new BlockChainService();
 
 ws.onmessage = (event: any) => {
 
@@ -18,8 +20,6 @@ ws.onmessage = (event: any) => {
         blocks: Block[],
         requestBlocks: boolean,
     } = JSON.parse(event.data);
-
-    console.log(json);
 
     if (json.requestBlocks) {
         const senderId: string = json.senderId;
@@ -52,7 +52,7 @@ ws.onmessage = (event: any) => {
 
     if (json.block) {
         // console.log('Received Block');
-        blockChainService.addBlock(4, new Block(
+        blockChainService.addBlock(bits, new Block(
             json.block.index,
             json.block.previousHash,
             json.block.transaction ?
@@ -88,9 +88,9 @@ ws.onmessage = (event: any) => {
     if (json.transaction) {
         // console.log('Received Transaction');
         const block: Block = blockChainService.createBlockFromTransaction(new Transaction(json.transaction.fromAddress, json.transaction.toAddress, json.transaction.amount, json.transaction.timestamp, json.transaction.signature), minerAddress);
-        block.mine(4);
+        block.mine(bits);
 
-        blockChainService.addBlock(4, block);
+        blockChainService.addBlock(bits, block);
 
         // console.log('Sending Block');
         ws.send(JSON.stringify({
@@ -119,13 +119,11 @@ setTimeout(() => {
 
 setInterval(() => {
 
-    console.log(blockChainService.blocks.length);
-
     // console.log('Received Transaction');
     const block: Block = blockChainService.createBlockFromTransaction(null, minerAddress);
-    block.mine(4);
+    block.mine(bits);
 
-    blockChainService.addBlock(4, block);
+    blockChainService.addBlock(bits, block);
 
     // console.log('Sending Block');
     ws.send(JSON.stringify({
@@ -139,13 +137,45 @@ setInterval(() => {
 }, 10000);
 
 function generateAddress(): string {
-    let text: string = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    for (let i = 0; i < 5; i++)
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    let publicKey: string = getCookie('cryptocurrency-public');
 
-    return text;
+    if (publicKey) {
+        return publicKey;
+    }
+
+    const rsa: any = new NodeRSA({ b: 512 });
+
+    const privateKey: string = rsa.exportKey('private');
+    publicKey = rsa.exportKey('public');
+
+    setCookie('cryptocurrency-public', publicKey.substring(26, publicKey.length - 25).replace(/\n/g, ''), undefined);
+    setCookie('cryptocurrency-private', privateKey.substring(31, privateKey.length - 29).replace(/\n/g, ''), undefined);
+
+    return publicKey;
+}
+
+function setCookie(cname: string, cvalue: string, exdays: number) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname: string) {
+    var name = cname + '=';
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return '';
 }
 
 export { BlockChainService } from './services/blockchain';

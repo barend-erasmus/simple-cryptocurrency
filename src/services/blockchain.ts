@@ -91,6 +91,10 @@ export class BlockChainService {
             if (block.transaction !== null && block.transaction.toAddress === address) {
                 result += block.transaction.amount;
             }
+
+            if (block.minerAddress === address) {
+                result += 1;
+            }
         }
 
         return result;
