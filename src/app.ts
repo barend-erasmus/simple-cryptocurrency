@@ -36,7 +36,9 @@ wsServer.on('connection', (ws) => {
         } = JSON.parse(data);
 
         if (json.requestBlocks) {
-            const recipentId: string = Object.keys(clients).filter((x) => x !== id).find((x) => clients[x].readyState === WebSocket.OPEN);
+            var availableRecipients: string[] = Object.keys(clients).filter((x) => x !== id).filter((x) => clients[x].readyState === WebSocket.OPEN);
+
+            const recipentId: string = availableRecipients[Math.floor(Math.random() * availableRecipients.length)];
 
             if (recipentId) {
                 json.senderId = id;
@@ -52,6 +54,10 @@ wsServer.on('connection', (ws) => {
                 }
             });
         }
+    });
+
+    ws.on('close', () => {
+        delete clients[id]; 
     });
 });
 
@@ -71,6 +77,8 @@ app.set('view engine', 'handlebars');
 app.get('/', (req: express.Request, res: express.Response) => {
     res.render('home');
 });
+
+app.use('/coverage', express.static(path.join(__dirname, './../coverage/lcov-report')));
 
 httpServer.listen(argv.port || 3000, () => {
     console.log(`listening on port ${argv.port || 3000}`);

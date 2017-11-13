@@ -13,7 +13,7 @@ describe('Transaction', () => {
                 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMJ4EO0RcH+clE2oCGCUcjUcTjBm2S67R8qQ4OBWTBrUCQ0dqvWyPGuGY33BPs8hFZB6be6KyfuLzZXH1d2dMDkCAwEAAQ==',
                 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ3dteNqyjJLTHz7EXfofBsnvoe5xa60OIbcPRPeWPIMTaxAxW/LcGugQaQ6Clnf47Q+NGNcKHMdIQZcjZq1eOkCAwEAAQ==',
                 10,
-                1510377496,
+                new Date().getTime(),
                 null,
             );
 
@@ -39,7 +39,7 @@ describe('Transaction', () => {
                 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMJ4EO0RcH+clE2oCGCUcjUcTjBm2S67R8qQ4OBWTBrUCQ0dqvWyPGuGY33BPs8hFZB6be6KyfuLzZXH1d2dMDkCAwEAAQ==',
                 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ3dteNqyjJLTHz7EXfofBsnvoe5xa60OIbcPRPeWPIMTaxAxW/LcGugQaQ6Clnf47Q+NGNcKHMdIQZcjZq1eOkCAwEAAQ==',
                 10,
-                1510377496,
+                new Date().getTime(),
                 null,
             );
 
@@ -67,7 +67,7 @@ describe('Transaction', () => {
                 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMJ4EO0RcH+clE2oCGCUcjUcTjBm2S67R8qQ4OBWTBrUCQ0dqvWyPGuGY33BPs8hFZB6be6KyfuLzZXH1d2dMDkCAwEAAQ==',
                 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ3dteNqyjJLTHz7EXfofBsnvoe5xa60OIbcPRPeWPIMTaxAxW/LcGugQaQ6Clnf47Q+NGNcKHMdIQZcjZq1eOkCAwEAAQ==',
                 10,
-                1510377496,
+                new Date().getTime(),
                 null,
             );
 
@@ -95,7 +95,7 @@ describe('Transaction', () => {
                 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMJ4EO0RcH+clE2oCGCUcjUcTjBm2S67R8qQ4OBWTBrUCQ0dqvWyPGuGY33BPs8hFZB6be6KyfuLzZXH1d2dMDkCAwEAAQ==',
                 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ3dteNqyjJLTHz7EXfofBsnvoe5xa60OIbcPRPeWPIMTaxAxW/LcGugQaQ6Clnf47Q+NGNcKHMdIQZcjZq1eOkCAwEAAQ==',
                 10,
-                1510377496,
+                new Date().getTime(),
                 null,
             );
 
@@ -123,7 +123,7 @@ describe('Transaction', () => {
                 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMJ4EO0RcH+clE2oCGCUcjUcTjBm2S67R8qQ4OBWTBrUCQ0dqvWyPGuGY33BPs8hFZB6be6KyfuLzZXH1d2dMDkCAwEAAQ==',
                 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJ3dteNqyjJLTHz7EXfofBsnvoe5xa60OIbcPRPeWPIMTaxAxW/LcGugQaQ6Clnf47Q+NGNcKHMdIQZcjZq1eOkCAwEAAQ==',
                 10,
-                1510377496,
+                new Date().getTime(),
                 null,
             );
 

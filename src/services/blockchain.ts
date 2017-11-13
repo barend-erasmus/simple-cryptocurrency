@@ -15,7 +15,7 @@ export class BlockChainService {
             return new Block(this.blocks.length === 0 ? 1 : this.blocks[this.blocks.length - 1].index + 1, this.blocks.length === 0 ? this.getGenesisBlock().hash : this.blocks[this.blocks.length - 1].hash, null, new Date().getTime(), 0, minerAddress);
         }
 
-        const balance: number = this.computeBalance(transaction.fromAddress);
+        const balance: number = this.computeBalance(transaction.fromAddress, this.blocks);
 
         if (balance < transaction.amount) {
             return null;
@@ -27,8 +27,12 @@ export class BlockChainService {
     }
 
     public addBlock(bits: number, block: Block): void {
-        if (this.canAddBlock(bits, block)) {
-            this.blocks.push(block);
+        const blocks: Block[] = this.blocks.slice(0);
+
+        blocks.push(block);
+
+        if (this.blocksValid(bits, blocks)) {
+            this.blocks = blocks;
         }
     }
 
@@ -50,7 +54,7 @@ export class BlockChainService {
         return block;
     }
 
-    public shouldRequestNewBlocks(bits: number, block: Block): boolean {
+    public validBlockIndex(bits: number, block: Block): boolean {
         if (!block.valid(bits)) {
             return false;
         }
@@ -62,32 +66,22 @@ export class BlockChainService {
         return false;
     }
 
-    private canAddBlock(bits: number, block: Block): boolean {
-        if (!block.valid(bits)) {
-            return false;
+    public _setBlocksForTesting(minerAddress: string, bits: number, n: number): void {
+        const blocks: Block[] = [];
+
+        for (let i = 0; i < n; i++) {
+            const block: Block = this.createBlockFromTransaction(null, minerAddress);
+
+            block.mine(bits);
+
+            this.addBlock(bits, block);
         }
-
-        if (block.index !== (this.blocks.length === 0 ? 1 : this.blocks[this.blocks.length - 1].index + 1)) {
-            return false;
-        }
-
-        if (block.transaction === null) {
-            return true;
-        }
-
-        const balance: number = this.computeBalance(block.transaction.fromAddress);
-
-        if (balance < block.transaction.amount) {
-            return false;
-        }
-
-        return true;
     }
 
-    private computeBalance(address: string): number {
+    private computeBalance(address: string, blocks: Block[]): number {
         let result = 0;
 
-        for (const block of this.blocks) {
+        for (const block of blocks) {
             if (block.transaction !== null && block.transaction.toAddress === address) {
                 result += block.transaction.amount;
             }
@@ -114,7 +108,9 @@ export class BlockChainService {
         // Index needs to be 1 greater then the previous block index
         let previousBlock = this.getGenesisBlock();
 
-        for (const block of blocks) {
+        for (let i = 0; i < blocks.length; i++) {
+
+            const block: Block = blocks[i];
 
             if (block.previousHash !== previousBlock.hash) {
                 return false;
@@ -128,13 +124,17 @@ export class BlockChainService {
                 return false;
             }
 
+            if (block.transaction !== null) {
+                const balance: number = this.computeBalance(block.transaction.fromAddress, blocks.slice(0, i));
+
+                if (balance < block.transaction.amount) {
+                    return false;
+                }
+            }
+
             previousBlock = block;
         }
 
         return true;
-    }
-
-    private log(message: string): void {
-        console.log(message);
     }
 }

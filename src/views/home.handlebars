@@ -1,0 +1,66 @@
+<div class="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Simple Cryptocurrency</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="jumbotron">
+        <h1>Simple Cryptocurrency</h1>
+        <p>A simple cryptocurrency built using Javascript and Web Sockets.</p>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Number of Blocks:</label>
+                    <div id="numberOfBlocks">N / A</div>
+                     <label>Your Balance:</label>
+                    <div id="balance">N / A</div>
+                    <br />
+                    <label>Your Private Address:</label>
+                    <div id="privateAddress">N / A</div>
+                    <br />
+                    <label>Your Public Address:</label>
+                    <div id="publicAddress">N / A</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="footer">
+    <div class="container">
+        <span class="text-muted">© 2017 Simple Cryptocurrency by Developer's Workspace PTY LTD</span>
+    </div>
+</footer>
+<script>
+    $(document).ready(function () {
+
+        var privateAddress = BlockChain.getPrivateAddress().replace(/(.{80})/g, '$1<br />');
+        var publicAddress = BlockChain.getPublicAddress().replace(/(.{80})/g, '$1<br />');
+
+        document.querySelector('#privateAddress').innerHTML = privateAddress;
+        document.querySelector('#publicAddress').innerHTML = publicAddress;
+
+        setInterval(() => {
+            document.querySelector('#numberOfBlocks').innerHTML = BlockChain.blockChainService.blocks.length;
+
+            document.querySelector('#balance').innerHTML = BlockChain.blockChainService.computeBalance(BlockChain.getPublicAddress(), BlockChain.blockChainService.blocks);
+        }, 2000);
+    });
+</script>

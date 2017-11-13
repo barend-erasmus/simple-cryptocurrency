@@ -6,17 +6,32 @@ Cryptocurrencies are decentralized and nodes communicated via P2P(Peer to Peer) 
 
 The objective(s) of this project is as follow:
 
-* Demonstrate how cryptocurrencies makes use of the blockchain technology.
+* Demonstrate how cryptocurrencies make use of the blockchain technology.
 * Web Browser Based.
 * No central database/datastore.
 
-To demonstrate how cryptocurrencies makes use of the blockchain technology we decided to exclude some of the features of Bitcoin, Ethereum and Litecoin and only focus on the core features of which all cryptocurrencies include.
+To demonstrate how cryptocurrencies make use of the blockchain technology we decided to exclude some of the features of Bitcoin, Ethereum, and Litecoin and only focus on the core features of which all cryptocurrencies include.
 
 The only P2P protocol suitable for a Web Browser Based, was [Web Sockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API). 
 
-We implemented a Web Sockets server which only forwards the data to all or one node. By implementing it this way, we still have a decentalized system and do not require a database or datastore.
+We implemented a Web Sockets server which only forwards the data to all or one node. By implementing it this way, we still have a decentralized system and do not require a database or datastore.
 
 ![](https://github.com/barend-erasmus/simple-cryptocurrency/raw/master/images/diagram.png)
+
+### Startup
+
+When a new node starts-up it has an empty blockchain and will therefore send a request to a random node in which it will respond with the full blockchain.
+
+### Receiving a full blockchain
+
+When a node receives a full blockchain it does a few validations before accepting it.
+
+The validation are:
+
+* The blockchain received should be longer than the one it currently has.
+* All blocks in the blockchain should be valid.
+
+If all the validations are met, it will replace its own blockchain with the received blockchain.
 
 ## Resources
 
