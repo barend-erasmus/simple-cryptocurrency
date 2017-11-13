@@ -71,7 +71,7 @@ ws.onmessage = (event: any) => {
 
     if (json.blocks) {
         // console.log('Received Blocks');
-        blockChainService.replaceChain(bits, json.blocks.map((x) => new Block(
+        blockChainService.replaceBlocks(bits, json.blocks.map((x) => new Block(
             x.index,
             x.previousHash,
             x.transaction ?
@@ -96,7 +96,7 @@ ws.onmessage = (event: any) => {
             json.block.minerAddress
         ));
 
-        if (blockChainService.shouldRequestNewChain(bits, new Block(
+        if (blockChainService.shouldRequestNewBlocks(bits, new Block(
             json.block.index,
             json.block.previousHash,
             json.block.transaction ?

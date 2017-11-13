@@ -32,12 +32,12 @@ export class BlockChainService {
         }
     }
 
-    public replaceChain(bits: number, blocks: Block[]): void {
+    public replaceBlocks(bits: number, blocks: Block[]): void {
         if (this.blocks.length > blocks.length) {
             return;
         }
 
-        if (!this.isChainValid(bits, blocks)) {
+        if (!this.blocksValid(bits, blocks)) {
             return;
         }
 
@@ -50,7 +50,7 @@ export class BlockChainService {
         return block;
     }
 
-    public shouldRequestNewChain(bits: number, block: Block): boolean {
+    public shouldRequestNewBlocks(bits: number, block: Block): boolean {
         if (!block.valid(bits)) {
             return false;
         }
@@ -100,7 +100,7 @@ export class BlockChainService {
         return result;
     }
 
-    private isChainValid(bits: number, blocks: Block[]): boolean {
+    private blocksValid(bits: number, blocks: Block[]): boolean {
         // All blocks should be valid
         for (const block of blocks) {
             if (!block.valid(bits)) {
@@ -108,7 +108,7 @@ export class BlockChainService {
             }
         }
 
-        // Chain should be valid
+        // Blocks should be valid
         // Previous hash needs to be equal to the previous block hash
         // Timestamp needs to be greater than the previous block timestamp
         // Index needs to be 1 greater then the previous block index
