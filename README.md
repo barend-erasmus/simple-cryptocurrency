@@ -1,7 +1,6 @@
 # Simple Cryptocurrency
 
-
-![]()
+![](https://github.com/barend-erasmus/simple-cryptocurrency/raw/master/images/diagram.png)
 
 ## Resources
 
