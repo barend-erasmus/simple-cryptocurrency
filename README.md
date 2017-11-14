@@ -26,12 +26,38 @@ When a new node starts-up it has an empty blockchain and will therefore send a r
 
 When a node receives a full blockchain it does a few validations before accepting it.
 
-The validation are:
+The validations are:
 
-* The blockchain received should be longer than the one it currently has.
-* All blocks in the blockchain should be valid.
+* Blockchain received should be longer than the one it currently has.
+* All blocks in the blockchain should be valid. See below how a valid block is defined.
 
 If all the validations are met, it will replace its own blockchain with the received blockchain.
+
+### Receiving a block
+
+When a node receives a block it does a few validations before accepting it.
+
+The validations are:
+
+* Block should be valid.
+* Block should be the next block in the chain by index.
+* Transaction(s) in the block should be valid. See below how a valid transaction is defined.
+
+If all the validations are met, it will add the block to its own blockchain.
+
+### Receiving a transaction
+
+
+
+## How are blocks validated?
+
+* Hash should be valid.
+* Transaction(s) should be valid.
+
+## How are transactions validated?
+
+* Signature should be valid.
+* According to the ledger, the `from address` needs to have sufficient funds.
 
 ## Resources
 
