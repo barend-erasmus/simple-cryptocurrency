@@ -4,7 +4,7 @@
 
 Cryptocurrencies are decentralized and nodes communicated via P2P(Peer to Peer) protocols.
 
-The objective(s) of this project is as follow:
+The objective(s) of this project is as follows:
 
 * Demonstrate how cryptocurrencies make use of the blockchain technology.
 * Web Browser Based.
