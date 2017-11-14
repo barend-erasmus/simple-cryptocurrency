@@ -47,7 +47,7 @@ If all the validations are met, it will add the block to its own blockchain.
 
 ### Receiving a transaction
 
-When a node receives a transaction is will bundle it with other transactions and create a block.
+When a node receives a transaction, it will bundle it with other transactions and create a block.
 
 This block will then be mined and once successfully mined, it will add it to its own blockchain and broadcast the block to other nodes.
 
