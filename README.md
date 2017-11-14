@@ -47,7 +47,9 @@ If all the validations are met, it will add the block to its own blockchain.
 
 ### Receiving a transaction
 
+When a node receives a transaction is will bundle it with other transactions and create a block.
 
+This block will then be mined and once successfully mined, it will add it to its own blockchain and broadcast the block to other nodes.
 
 ## How are blocks validated?
 
@@ -58,6 +60,10 @@ If all the validations are met, it will add the block to its own blockchain.
 
 * The signature should be valid.
 * According to the ledger, the `from address` needs to have sufficient funds.
+
+## Where can I see this project running?
+
+[Join Simple Cryptocurrency](http://simple-cryptocurrency.openservices.co.za/)
 
 ## Resources
 
