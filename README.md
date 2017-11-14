@@ -20,7 +20,7 @@ We implemented a Web Sockets server which only forwards the data to all or one n
 
 ### Startup
 
-When a new node starts-up it has an empty blockchain and will therefore send a request to a random node in which it will respond with the full blockchain.
+When a new node starts-up it has an empty blockchain and will send a request to a random node in which it will respond with the full blockchain.
 
 ### Receiving a full blockchain
 
@@ -56,7 +56,7 @@ If all the validations are met, it will add the block to its own blockchain.
 
 ## How are transactions validated?
 
-* Signature should be valid.
+* The signature should be valid.
 * According to the ledger, the `from address` needs to have sufficient funds.
 
 ## Resources
