@@ -90,15 +90,6 @@ ws.onmessage = (event: any) => {
             json.block.nonce,
             json.block.minerAddress
         ))) {
-            ws.send(JSON.stringify({
-                senderId: null,
-                recipentId: null,
-                transaction: null,
-                block: null,
-                blocks: null,
-                requestBlocks: true,
-            }));
-        } else {
             blockChainService.addBlock(bits, new Block(
                 json.block.index,
                 json.block.previousHash,
@@ -109,6 +100,16 @@ ws.onmessage = (event: any) => {
                 json.block.nonce,
                 json.block.minerAddress
             ));
+
+        } else {
+            ws.send(JSON.stringify({
+                senderId: null,
+                recipentId: null,
+                transaction: null,
+                block: null,
+                blocks: null,
+                requestBlocks: true,
+            }));
         }
     }
 
